@@ -30,20 +30,9 @@ public class ABB {
             raiz.dir = insertRec(valor, raiz.dir);
         }
 
-        if(raiz.esq != null) {
-            if(raiz.dir != null) {
-                raiz.nosEsq = raiz.esq.nosEsq + raiz.esq.nosDir + 1;
-                raiz.nosDir = raiz.dir.nosEsq + raiz.dir.nosDir + 1;
-            }
-            else {
-                raiz.nosEsq = raiz.esq.nosEsq + raiz.esq.nosDir + 1;
-            }
-        }
-        else {
-            if(raiz.dir != null) {
-                raiz.nosDir = raiz.dir.nosEsq + raiz.dir.nosDir + 1;
-            }
-        }
+        raiz.altura = calcularAltura(raiz);
+        raiz.nosEsq = calcularNosEsq(raiz);
+        raiz.nosDir = calcularNosDir(raiz);
 
         return raiz;
     }
@@ -154,17 +143,92 @@ public class ABB {
         return s;
     }
 
+    public boolean ehCheia() {
+        if(raiz == null) {
+            return true;
+        }
+
+        int altura = raiz.altura;
+        int n = raiz.nosDir + raiz.nosEsq + 1;
+
+        if(altura == Math.log(n+1)/Math.log(2)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean ehCompleta() {
+        if(raiz == null) {
+            return true;
+        }
+
+        int altura = raiz.altura;
+        int n = raiz.nosDir + raiz.nosEsq + 1;
+
+        if(altura == 1 + Math.floor(Math.log(n) / Math.log(2))) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void simetrica(Node raiz) {
+        if(raiz != null) {
+            simetrica(raiz.esq);
+            System.out.println(raiz.valor + " Alt:" + raiz.altura + " NosEsq:" + raiz.nosEsq + " NosDir:" + raiz.nosDir);
+            simetrica(raiz.dir);
+        }
+    }
+
+    private int calcularAltura(Node no) {
+        if(no.esq != null) {
+            if(no.dir != null) {
+                int maior_altura = no.esq.altura > no.dir.altura ? no.esq.altura : no.dir.altura;
+                return maior_altura + 1;
+            }
+            else {
+                return no.esq.altura + 1;
+            }
+        }
+        else {
+            if(no.dir != null) {
+                return no.dir.altura + 1;
+            }
+            else {
+                return 1;
+            }
+        }
+    }
+
+    private int calcularNosEsq(Node no) {
+        if(no.esq != null) {
+            return no.esq.nosEsq + no.esq.nosDir + 1;
+        }
+
+        return 0;
+    }
+
+    private int calcularNosDir(Node no) {
+        if (no.dir != null) {
+            return no.dir.nosEsq + no.dir.nosDir + 1;
+        }
+
+        return 0;
+    }
+
     public static void main(String[] args) {
         ABB a = new ABB();
 
         a.insert(20);
-        a.insert(15);
-        a.insert(10);
         a.insert(30);
-        a.insert(45);
+        a.insert(25);
         a.insert(35);
-        a.insert(50);
+        a.insert(10);
+        a.insert(15);
+        a.insert(5);
 
-        System.out.println(a.preOrdem(a.getRaiz()));
+        System.out.println("Completa: " + a.ehCompleta());
+        System.out.println("Cheia: " + a.ehCheia());
     }
 }

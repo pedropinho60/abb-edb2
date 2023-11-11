@@ -6,6 +6,7 @@ public class Node {
     Node dir;
     int nosEsq;
     int nosDir;
+    int altura;
 
     public Node(int valor) {
         this.valor = valor;
@@ -13,5 +14,6 @@ public class Node {
         this.dir = null;
         this.nosEsq = 0;
         this.nosDir = 0;
+        altura = 1;
     }
 }
