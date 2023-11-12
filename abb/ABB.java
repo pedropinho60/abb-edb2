@@ -29,6 +29,9 @@ public class ABB {
         } else if(valor > raiz.valor) {
             raiz.dir = insertRec(valor, raiz.dir);
         }
+        else {
+            return null;
+        }
 
         raiz.altura = calcularAltura(raiz);
         raiz.nosEsq = calcularNosEsq(raiz);
@@ -37,14 +40,16 @@ public class ABB {
         return raiz;
     }
 
-    public void remover(int valor) {
-        removerRec(valor, raiz, null);
+    public boolean remover(int valor) {
+        return removerRec(valor, raiz, null);
     }
 
-    private void removerRec(int valor, Node raiz, Node pai) {
+    private boolean removerRec(int valor, Node raiz, Node pai) {
         if(raiz == null) {
-            return;
+            return false;
         }
+
+        boolean resultado = false;
 
         if(valor < raiz.valor) {
             removerRec(valor, raiz.esq, raiz);
@@ -53,6 +58,7 @@ public class ABB {
             removerRec(valor, raiz.dir, raiz);
         }
         else {
+            resultado = true;
             if(raiz.altura == 1) {
                 if (pai == null) {
                     this.raiz = null;
@@ -88,16 +94,16 @@ public class ABB {
                 }
 
                 int aux = no.valor;
-                no.valor = raiz.valor;
-                raiz.valor = aux;
-
                 remover(no.valor);
+                raiz.valor = aux;
             }
         }
 
         raiz.altura = calcularAltura(raiz);
         raiz.nosEsq = calcularNosEsq(raiz);
         raiz.nosDir = calcularNosDir(raiz);
+
+        return resultado;
     }
 
     public Node buscar(int x) {
@@ -240,6 +246,7 @@ public class ABB {
         }
         else if(s == 2) {
             imprimeRec2(raiz);
+            System.out.println();
         }
     }
 
@@ -312,22 +319,11 @@ public class ABB {
     public static void main(String[] args) {
         ABB a = new ABB();
 
-        a.insert(20);
-        a.insert(30);
-        a.insert(25);
-        a.insert(10);
-        a.insert(15);
-        a.insert(13);
-        a.insert(5);
-
+        a.insert(41);
+        a.insert(32);
+        a.insert(60);
+        a.insert(39);
+        a.insert(39);
         a.imprimeArvore(1);
-        System.out.println();
-        a.simetrica(a.getRaiz());
-        System.out.println();
-
-        a.remover(15);
-        a.imprimeArvore(1);
-        System.out.println();
-        a.simetrica(a.getRaiz());
     }
 }
