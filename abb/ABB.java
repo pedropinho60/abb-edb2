@@ -37,7 +37,68 @@ public class ABB {
         return raiz;
     }
 
-    public void remover(int x){}
+    public void remover(int valor) {
+        removerRec(valor, raiz, null);
+    }
+
+    private void removerRec(int valor, Node raiz, Node pai) {
+        if(raiz == null) {
+            return;
+        }
+
+        if(valor < raiz.valor) {
+            removerRec(valor, raiz.esq, raiz);
+        }
+        else if(valor > raiz.valor) {
+            removerRec(valor, raiz.dir, raiz);
+        }
+        else {
+            if(raiz.altura == 1) {
+                if (pai == null) {
+                    this.raiz = null;
+                } else if (pai.dir == raiz) {
+                    pai.dir = null;
+                } else {
+                    pai.esq = null;
+                }
+            }
+            else if(raiz.esq != null && raiz.dir == null) {
+                if (pai == null) {
+                    this.raiz = raiz.esq;
+                } else if (pai.dir == raiz) {
+                    pai.dir = raiz.esq;
+                } else {
+                    pai.esq = raiz.esq;
+                }
+            }
+            else if(raiz.esq == null && raiz.dir != null) {
+                if (pai == null) {
+                    this.raiz = raiz.dir;
+                } else if (pai.dir == raiz) {
+                    pai.dir = raiz.dir;
+                } else {
+                    pai.esq = raiz.dir;
+                }
+            }
+            else {
+                Node no = raiz.esq;
+
+                while(no.dir != null) {
+                    no = no.dir;
+                }
+
+                int aux = no.valor;
+                no.valor = raiz.valor;
+                raiz.valor = aux;
+
+                remover(no.valor);
+            }
+        }
+
+        raiz.altura = calcularAltura(raiz);
+        raiz.nosEsq = calcularNosEsq(raiz);
+        raiz.nosDir = calcularNosDir(raiz);
+    }
 
     public Node buscar(int x) {
         Node noAtual = raiz;
@@ -173,6 +234,37 @@ public class ABB {
         return false;
     }
 
+    public void imprimeArvore(int s) {
+        if(s == 1) {
+            imprimeRec1(raiz, 0);
+        }
+        else if(s == 2) {
+            imprimeRec2(raiz);
+        }
+    }
+
+    private void imprimeRec1(Node raiz, int nivel) {
+        if(raiz != null) {
+            for (int i = 0; i < nivel; i++) {
+                System.out.print("    ");
+            }
+
+            System.out.println(raiz.valor);
+            imprimeRec1(raiz.esq, nivel + 1);
+            imprimeRec1(raiz.dir, nivel + 1);
+        }
+    }
+
+    private void imprimeRec2(Node raiz) {
+        if(raiz != null) {
+            System.out.print("(");
+            System.out.print(raiz.valor);
+            imprimeRec2(raiz.esq);
+            imprimeRec2(raiz.dir);
+            System.out.print(")");
+        }
+    }
+
     public void simetrica(Node raiz) {
         if(raiz != null) {
             simetrica(raiz.esq);
@@ -223,12 +315,19 @@ public class ABB {
         a.insert(20);
         a.insert(30);
         a.insert(25);
-        a.insert(35);
         a.insert(10);
         a.insert(15);
+        a.insert(13);
         a.insert(5);
 
-        System.out.println("Completa: " + a.ehCompleta());
-        System.out.println("Cheia: " + a.ehCheia());
+        a.imprimeArvore(1);
+        System.out.println();
+        a.simetrica(a.getRaiz());
+        System.out.println();
+
+        a.remover(15);
+        a.imprimeArvore(1);
+        System.out.println();
+        a.simetrica(a.getRaiz());
     }
 }
