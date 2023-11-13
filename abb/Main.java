@@ -73,12 +73,12 @@ public class Main {
                 }
                 else if(s.equals("INSIRA")) {
                     int n = sc2.nextInt();
-                    Node t = a.insert(n);
-                    if(t == null) {
-                        System.out.println(n + " já está na árvore, não pode ser inserido");
+                    boolean t = a.insert(n);
+                    if(t) {
+                        System.out.println(n + " adicionado");
                     }
                     else {
-                        System.out.println(n + " adicionado");
+                        System.out.println(n + " já está na árvore, não pode ser inserido");
                     }
                 }
                 else if(s.equals("BUSCAR")) {

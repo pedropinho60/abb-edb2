@@ -11,26 +11,29 @@ public class ABB {
         return raiz;
     }
 
-    public Node insert(int valor) {
+    public boolean insert(int valor) {
         if(raiz == null) {
-            raiz = new Node(valor);
-            return raiz;
+            raiz = insertRec(valor, raiz);
+            return true;
+        }
+
+        int n = raiz.nosEsq + raiz.nosDir + 1;
+        raiz = insertRec(valor, raiz);
+        if(n == raiz.nosEsq + raiz.nosDir + 1) {
+            return false;
         }
         else {
-            return insertRec(valor, raiz);
+            return true;
         }
     }
 
     private Node insertRec(int valor, Node raiz) {
         if(raiz == null) {
-            return new Node(valor);
+            raiz = new Node(valor);
         } else if(valor < raiz.valor) {
             raiz.esq = insertRec(valor, raiz.esq);
         } else if(valor > raiz.valor) {
             raiz.dir = insertRec(valor, raiz.dir);
-        }
-        else {
-            return null;
         }
 
         raiz.altura = calcularAltura(raiz);
