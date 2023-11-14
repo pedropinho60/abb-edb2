@@ -275,14 +275,6 @@ public class ABB {
         }
     }
 
-    public void simetrica(Node raiz) {
-        if(raiz != null) {
-            simetrica(raiz.esq);
-            System.out.println(raiz.valor + " Alt:" + raiz.altura + " NosEsq:" + raiz.nosEsq + " NosDir:" + raiz.nosDir);
-            simetrica(raiz.dir);
-        }
-    }
-
     private int calcularAltura(Node no) {
         if(no.esq != null) {
             if(no.dir != null) {
@@ -319,14 +311,4 @@ public class ABB {
         return 0;
     }
 
-    public static void main(String[] args) {
-        ABB a = new ABB();
-
-        a.insert(41);
-        a.insert(32);
-        a.insert(60);
-        a.insert(39);
-        a.insert(39);
-        a.imprimeArvore(1);
-    }
 }
